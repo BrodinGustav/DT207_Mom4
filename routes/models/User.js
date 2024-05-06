@@ -81,6 +81,6 @@ userSchema.statics.login = async function(username, password) {
 }
 
 const User = mongoose.model("User", userSchema);
-module.export = User;
+module.exports = User;
 
 

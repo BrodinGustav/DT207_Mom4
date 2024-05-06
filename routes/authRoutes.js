@@ -14,7 +14,7 @@ mongoose.connect(process.env.DATABASE).then(() => {
 })
 
 //User model
-const User = require("../models/User");
+const User = require("./models/User");
 
 
 
@@ -30,10 +30,13 @@ router.post("/register", async (req, res) => {
 
         //Correct input - save user
         //OBS! Här läggs koden för lagring till databas! 
+        const user = new User({ username, password });          //Använder userSchema från models/user för lagring av ny användare
+        await user.save();
+
         res.status(200).json({message: "User created"});
 
    }catch(error){
-    res.status(500).json({error: "Server error"});
+    res.status(500).json({error: "Server error"} + error);
    }
 });
 
