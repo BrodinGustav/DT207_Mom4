@@ -3,6 +3,7 @@
 const express = require("express");
 const router = express.Router();                //Tillgång till routern som installerades för användning till anrop
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 //Anslutning till mongoDB
@@ -65,7 +66,15 @@ router.post("/login", async (req, res) => {
         if(!isPasswordMatched) {
             return res.status(401).json({ error: "Incorrect username/password"});
         } else {
-            res.status(200).json( { message: "User logged in"});
+            //Skapa JWT
+            const payload = { username: username };                                                  //Användare lagras i JWT:n
+            const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {expiresIn: '8h'});
+            const respons = {
+                message: "User logged in!",
+                token: token    
+            }
+
+            res.status(200).json( { respons});
         }
 
     }catch(error) {
