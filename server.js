@@ -3,11 +3,12 @@
 //Serverinställningar
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require ('cors');              //Möjliggör korsdomän förfrågningar till servern
 const authRoutes = require("./routes/authRoutes");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-
+app.use(cors());
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
@@ -32,7 +33,7 @@ function authenticateToken(req, res, next) {                   //authenticateTok
     if(err) return res.status(403).json({message: "Invalid JWT"});
 
     req.username = username;
-    next();
+    next();                                                                     //Om verifiering godkänd skickas användaren till /api/protected
     });
 
 }                      
