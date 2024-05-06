@@ -4,6 +4,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 
@@ -14,6 +15,27 @@ app.use(bodyParser.json());
 //Routes
 app.use("/api", authRoutes) //Försöker användare gå in på URLen så skickas den vidare till routen. 
 
+//Skyddad route
+app.get("/api/protected", authenticateToken, (req, res) => {        //Route som kollar om token är korrekt
+    res.json({message: "Skyddad route"});
+})          
+
+//Validera Token
+function authenticateToken(req, res, next) {                   //authenticateToken används som middleware som kontroll ifall token är korrekt
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];       //Tar bort "bearer" + mellanslag och använder bara själva token
+
+    if (token == null) res.status(401).json({message : "Not authorized for this route - token missing"});
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, username) => {          //Metod för att verifiera JWT med argumenten token & secret_key
+    
+    if(err) return res.status(403).json({message: "Invalid JWT"});
+
+    req.username = username;
+    next();
+    });
+
+}                      
 
 //Start applikation
 app.listen(port, () => {
