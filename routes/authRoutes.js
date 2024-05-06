@@ -2,6 +2,20 @@
 
 const express = require("express");
 const router = express.Router();                //Tillgång till routern som installerades för användning till anrop
+const mongoose = require("mongoose");
+require("dotenv").config();
+
+//Anslutning till mongoDB
+mongoose.set("strictQuery", false);
+mongoose.connect(process.env.DATABASE).then(() => {
+    console.log("Connected to mongoDB");
+}).catch((error) => {
+    console.error("Error connecting to database" + error);
+})
+
+//User model
+const User = require("../models/User");
+
 
 
 //Skapa ny användare
