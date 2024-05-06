@@ -51,11 +51,21 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({error: "Invalid input, send username and password"});      //OBS! Skapa error-array som lagrar de olika felmeddelandena!
         }
 
-        //Check credentials (OBS! Korregera så det ej är bestämda värden!)
-        if(username === "Gustav" && password === "1234") {
-            res.status(200).json({message: "Login successful"});
-        }else{
-            res.status(401).json({error: "Invalid username/password"});
+        //Check credentials 
+
+        //Finns användare?
+        const user = await User.findOne( { username });
+
+        if(!username) {
+            return res.status(401).json({ error: "Incorrect username/password"});
+        }
+
+        //Check password
+        const isPasswordMatched = await user.comparePassword(password);
+        if(!isPasswordMatched) {
+            return res.status(401).json({ error: "Incorrect username/password"});
+        } else {
+            res.status(200).json( { message: "User logged in"});
         }
 
     }catch(error) {
