@@ -41,7 +41,6 @@ router.post("/register", async (req, res) => {
    }
 });
 
-
 //Logga in användare
 router.post("/login", async (req, res) => {
         try{
@@ -55,10 +54,10 @@ router.post("/login", async (req, res) => {
         //Check credentials 
 
         //Finns användare?
-        const user = await User.findOne( { username });
+        const user = await User.findOne( { username: username });
 
-        if(!username) {
-            return res.status(401).json({ error: "Incorrect username/password"});
+        if(!user) {
+            return res.status(401).json({ error: "Incorrect username/password"});                   //OBS Lägg till error i array för utskrivning till användare
         }
 
         //Check password
@@ -69,12 +68,7 @@ router.post("/login", async (req, res) => {
             //Skapa JWT
             const payload = { username: username };                                                  //Användare lagras i JWT:n
             const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {expiresIn: '8h'});
-            const respons = {
-                message: "User logged in!",
-                token: token    
-            }
-
-            res.status(200).json( { respons});
+            res.status(200).json({message: "Inloggad!", token, redirectUrl: "/protected.html"});
         }
 
     }catch(error) {
