@@ -12,6 +12,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static('src'));         //Möjliggör för åtkomst av statiska filer (JS, CSS)
 
 //Routes
 app.use("/api", authRoutes) //Försöker användare gå in på URLen så skickas den vidare till routen. 
