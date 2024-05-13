@@ -19,8 +19,8 @@ app.use("/api", authRoutes) //Försöker användare gå in på URLen så skickas
 
 //Skyddad route
 app.get("/api/protected", authenticateToken, (req, res) => {        //Route som kollar om token är korrekt
-    res.json({message: "Skyddad route", welcomeMessage: "Hej du"});
-   })          
+    res.json({message: "Skyddad route"});
+   });          
 
 //Validera Token
 function authenticateToken(req, res, next) {                   //authenticateToken används som middleware som kontroll ifall token är korrekt
@@ -43,3 +43,4 @@ function authenticateToken(req, res, next) {                   //authenticateTok
 app.listen(port, () => {
     console.log(`Server running att http//:localhost:${port}`);
 })
+
