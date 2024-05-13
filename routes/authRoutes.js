@@ -57,7 +57,7 @@ router.post("/login", async (req, res) => {
             return res.status(401).json({ error: "Incorrect username/password"});                   //OBS Lägg till error i array för utskrivning till användare
         }
 
-        //Check password
+        //Kolla lösenord
         const isPasswordMatched = await user.comparePassword(password);
         if(!isPasswordMatched) {
             return res.status(401).json({ error: "Incorrect username/password"});
@@ -65,7 +65,7 @@ router.post("/login", async (req, res) => {
             //Skapa JWT
             const payload = { username: username };                                                  //Användare lagras i JWT:n
             const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {expiresIn: '8h'});
-            res.status(200).json({message: "Inloggad!", token, redirectTo: "/protected.html"});
+            res.status(200).json({message: "Inloggad!", token});
         }
 
     }catch(error) {
