@@ -50,8 +50,6 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({error: "Invalid input, send username and password"});      //OBS! Skapa error-array som lagrar de olika felmeddelandena!
         }
 
-        //Check credentials 
-
         //Finns användare?
         const user = await User.findOne( { username: username });
 
@@ -67,7 +65,7 @@ router.post("/login", async (req, res) => {
             //Skapa JWT
             const payload = { username: username };                                                  //Användare lagras i JWT:n
             const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {expiresIn: '8h'});
-            res.status(200).json({message: "Inloggad!", token});
+            res.status(200).json({message: "Inloggad!", token, redirectTo: "/protected.html"});
         }
 
     }catch(error) {
