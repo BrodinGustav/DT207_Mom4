@@ -19,6 +19,7 @@ app.use("/api", authRoutes) //Försöker användare gå in på URLen så skickas
 
 //Skyddad route
 app.get("/api/protected", authenticateToken, (req, res) => {        //Route som kollar om token är korrekt
+    res.sendFile(__dirname + "/protected.html");
     res.json({message: "Skyddad route"});
    });          
 
