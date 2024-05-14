@@ -47,14 +47,14 @@ router.post("/login", async (req, res) => {
 
             //Validera input
         if(!username || !password) {
-            return res.status(400).json({error: "Invalid input, send username and password"});      //OBS! Skapa error-array som lagrar de olika felmeddelandena!
+            return res.status(400).json({error: "Invalid input, send username and password"});      
         }
 
         //Finns användare?
         const user = await User.findOne( { username: username });
 
         if(!user) {
-            return res.status(401).json({ error: "Incorrect username/password"});                   //OBS Lägg till error i array för utskrivning till användare
+            return res.status(401).json({ error: "Incorrect username/password"});                   
         }
 
         //Kolla lösenord

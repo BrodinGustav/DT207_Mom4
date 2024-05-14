@@ -1,4 +1,4 @@
-/*User-scheama och metoder för registrering och log in*/
+/*User-scheama och metoder för registrering och log in och verifiering av lösenord*/
 
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true //Här kan längd etc tilläggas
+        required: true 
     },
     created: {
         type: Date,

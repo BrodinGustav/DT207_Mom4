@@ -2,16 +2,16 @@
 
 //Serverinställningar
 const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require ('cors');              //Möjliggör korsdomän förfrågningar till servern
-const authRoutes = require("./routes/authRoutes");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+const bodyParser = require("body-parser");              //Möjiggör för formulärhanteirng
+const cors = require ('cors');                          //Möjliggör korsdomän förfrågningar till servern
+const authRoutes = require("./routes/authRoutes");      //Används för autentiseringsrutter     
+const jwt = require("jsonwebtoken");                    //Används för JSON Web Token hantering
+require("dotenv").config();                             
 
-const app = express(); 
-const port = process.env.PORT || 3000;
-app.use(bodyParser.json());
-app.use(cors());
+const app = express();                                  //Skapar instans av express
+const port = process.env.PORT || 3000;                  //Anger port
+app.use(bodyParser.json());                             //Tolkar inkommande JSON-anrop
+app.use(cors());                                        
 app.use(express.static('src'));         //Möjliggör för åtkomst av statiska filer (JS, CSS)
 
 //Routes
@@ -29,7 +29,7 @@ function authenticateToken(req, res, next) {                   //authenticateTok
 
     if (token == null) res.status(401).json({message : "Nekad åtkomst - token saknas"});
 
-    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, username) => {          //Metod för att verifiera JWT med argumenten token & secret_key
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, username) => {          //Metod för att verifiera JWT med argumenten token & secret_key. Verifieras mot den hemliga nyckeln
     
     if(err) return res.status(403).json({message: "Ogiltig JWT"});
 
